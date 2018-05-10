@@ -18,8 +18,8 @@ export class TdFormsComponent implements OnInit {
   ngOnInit() { }
 
   submit() {
-    console.log(this.userForm);
     if (this.userForm.valid) {
+      console.log(this.userForm.value);
       // submit the form
     } else {
       return false;

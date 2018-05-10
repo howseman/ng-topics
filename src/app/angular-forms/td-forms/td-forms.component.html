@@ -10,13 +10,20 @@
       <ul>
         <li>Import the <code>FormsModule</code> module inside the container module (generally, app.module.ts)</li>
         <li>Add the template reference name to the form tag and set its value to <code>ngForm</code>. ie: <code>#tRefName="ngForm"</code></li>
-        <li>Add the <code>(ngSubmit)</code> event listener to the form tag and the event handler function to your controller in one of below ways:</li>
+        <li>Add the <code>(ngSubmit)</code> event listener to the form tag and the event handler function to your controller in one of below ways:
           <ul>
             <li><code>(ngSubmit)="submit(#tRefName)"</code> and adding to controller <code>submit(myForm: NgForm) {{ '{' }}...{{ '}' }}</code> or</li>
             <li><code>(ngSubmit)="submit()"</code> and add the ElementRef to the controller <code>@ViewChild('tRefName') myForm: NgForm;</code> and <code>submit() {{ '{' }}...{{ '}' }}</code></li>
           </ul>
-          <li>Add the <code>name</code> attribute with their respective value to all of your form controls</li>
-        <li>Add the <code>ngModel</code> directive to any input in your form. If you want double way binding use: <code>[(ngModel)]="propertyName"</code></li>
+        </li>
+        <li>Add the <code>name</code> attribute with their respective value to all of your form controls</li>
+        <li>Add the <code>ngModel</code> directive to all inputs in your form.
+          <br>to get the reference to the form control, especially for validations, use: <code>#refName="ngModel"</code>
+        </li>
+        <li>
+          to set default values to a form control, use: <code>[ngModel]="propertyName"</code>
+          <del><br>If you want double way binding add: <code>[(ngModel)]="propertyName"</code></del>
+        </li>
         <li>Add the HTML validations <a href="https://angular.io/docs/ts/latest/api/forms/index/Validators-class.html" target="_blank">Angular Validators class</a>
           <br>
           Additionally, you might also want to enable HTML5 validation (by default, Angular disables it). You can do so by adding the ngNativeValidate  to a control in your template.
@@ -28,25 +35,28 @@
     </div>
   </div>
   <form #myForm="ngForm" (ngSubmit)="submit()">
-    <div ngModelGroup="myGroup" #myGroup="ngModelGroup">
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label class="font-weight-bold" for="userName">Name</label>
-          <input class="form-control" type="text" name="name" id="userName"
-                 required minlength="5"
-                 #userName="ngModel" [(ngModel)]="name">
-          <div class="form-control-feedback form-control-error"
-               *ngIf="userName.errors && (userName.dirty || userName.touched)">
-            Required field, min 5 chars.
-          </div>
+    <div class="row" ngModelGroup="myGroup" #myGroup="ngModelGroup">
+      <div class="form-group col-md-6">
+        <label class="font-weight-bold">Name</label>
+        <input class="form-control"
+               type="text"
+               name="name"
+               required minlength="5"
+               [ngModel]="name"
+               #userName="ngModel">
+        <div class="form-control-feedback form-control-error"
+             *ngIf="userName.errors && (userName.dirty || userName.touched)">
+          Required field, min 5 chars.
         </div>
-        <div class="form-group col-md-6">
-            <label class="font-weight-bold">Primary Language</label>
-            <select class="form-control" name="lang"
-                    [(ngModel)]="selectedLang">
-              <option *ngFor="let lang of languages" [value]="lang">{{lang}}</option>
-            </select>
-          </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="font-weight-bold">Primary Language</label>
+        <select class="form-control" name="lang"
+                required
+                #selectedLang="ngModel"
+                [ngModel]="lang">
+          <option *ngFor="let lang of languages" [value]="lang">{{lang}}</option>
+        </select>
       </div>
     </div>
     <!-- You can add more form groups -->
@@ -63,3 +73,6 @@
     </div>
   </form>  
 </div>
+<br>
+<br>
+<br>
