@@ -1,0 +1,27 @@
+<h3>Change detection with OnPush:</h3>
+<pre style="color: gray;">
+  @Component({{'{'}}
+    changeDetection: ChangeDetectionStrategy.OnPush
+    ...
+  )
+</pre>
+<p>
+  If you use OnPush in a child component, when you make changes to a binded property from parent component,
+  the child component is not notified, only is notified if you change the whole object/property.
+</p>
+<p>
+  In the next example, the "Toggle First Item" button calls a function that changes the "completed"
+  property of the first TODO object in TODOS collection, on the other hand the "Add Todo to List" button
+  calls a function that makes a copy of the original collection, push a new Todo inside, and sets the collection,
+  this way the child component is notified.
+</p>
+<p>
+  If you remove the OnPush, on both cases the child component is notified, give it a check!
+</p>
+
+<app-todo-item [todo]="todo" *ngFor="let todo of todos" (toggle)="reportToggle($event)"></app-todo-item>
+<br>
+<button (click)="toggleFirst()" class="btn btn-primary">Toggle First Item</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button (click)="addTodo()" class="btn btn-primary">Add Todo to List</button>
+
